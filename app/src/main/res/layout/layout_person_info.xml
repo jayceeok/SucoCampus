@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+            <RelativeLayout android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="10dp"/>
+                <ImageView
+                    android:id="@+id/iv_name"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="20dp"
+                    android:layout_toRightOf="@id/iv_head" android:background="@drawable/ic_name"/>
+
+                <TextView android:id="@+id/tv_name" android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_margin="35dp"
+                          android:layout_toRightOf="@id/iv_name"
+                          android:text="姜超"
+                          android:textSize="28sp"
+
+                    />
+            </RelativeLayout>
+
+            <TableLayout
+                android:id="@+id/tablelayout01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:stretchColumns="2">
+
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_administration"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="职位"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_position"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="院长"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_office_tel"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="办公电话"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_office_tel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:clickable="true"
+                        android:text="0523-6877250"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_office_short_tel"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="办公短号"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_office_short_tel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+
+                        android:clickable="true"
+                        android:text="8000"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_mobile_phone"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="手机号码"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_mobile_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+
+                        android:clickable="true"
+                        android:text="13852558888"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_mobile_short_phone"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="手机短号"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_mobile_short_phone"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:clickable="true"
+                        android:text="68000"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_home_tel"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="宅电"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_home_tel"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:clickable="true"
+                        android:text="0523-89217812"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_email"
+                        />
+                    <TextView
+
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="E-mail"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+
+                        android:clickable="true"
+                        android:text="jaycee@gmail.com"
+                        android:textSize="15sp">
+                    </TextView>
+
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_qq"
+                        />
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="QQ"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_qq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="625435998"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+                <TableRow>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/ic_department"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="部门"
+                        android:textSize="15sp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_department"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="计算机科学与技术"
+                        android:textSize="15sp">
+                    </TextView>
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</LinearLayout>

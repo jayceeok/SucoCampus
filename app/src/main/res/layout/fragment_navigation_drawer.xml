@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/weather_bg"
+                android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawerList"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/myDrawerBackground"
+        android:clickable="true"
+        android:scrollbars="vertical"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/tv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_menu_setting"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:textColor="#808080"
+            android:text="设置" android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/tv_night"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_setting"
+            android:drawableLeft="@drawable/ic_menu_night"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="夜间"
+            android:textColor="#808080" android:textSize="24sp"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_place"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_toRightOf="@id/tv_night"-->
+            <!--android:drawableLeft="@drawable/ic_menu_sunny"-->
+            <!--android:drawablePadding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="地名"-->
+            <!--android:textColor="#808080" android:textSize="24sp"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_above="@id/tv_place"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_toRightOf="@id/tv_night"-->
+            <!--android:drawableLeft="@drawable/ic_menu_sunny"-->
+            <!--android:drawablePadding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="气温"-->
+            <!--android:textColor="#808080" android:textSize="24sp"/>-->
+    </RelativeLayout>
+</RelativeLayout>
+

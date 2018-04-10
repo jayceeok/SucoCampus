@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+    <EditText android:id="@+id/et_query_tel" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="50dp"
+              android:layout_marginRight="50dp"
+              android:layout_marginTop="100dp"
+              android:hint="请输入要查询的手机号码"
+
+        />
+    <Button android:id="@+id/btn_query" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_query_tel"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="80dp"
+            android:text="查询归属地"
+        />
+
+    <TextView android:layout_width="match_parent" android:layout_height="100dp"
+              android:layout_below="@id/btn_query"
+              android:layout_marginLeft="50dp"
+              android:layout_marginRight="50dp"
+              android:gravity="center"
+              android:layout_marginTop="60dp"
+              android:padding="10dp"
+
+              android:id="@+id/show_tel_info"
+        />
+</RelativeLayout>
