@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
-
+    Fragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         mNavigationDrawerFragment.setup(
                 R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar
         );
-        Fragment fragment = new HomePageFragment();
+        if (fragment==null){
+            fragment = new HomePageFragment();
+        }
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
 
