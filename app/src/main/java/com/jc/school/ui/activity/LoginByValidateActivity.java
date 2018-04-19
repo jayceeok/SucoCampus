@@ -24,7 +24,7 @@ import cn.bmob.newsmssdk.listener.VerifySMSCodeListener;
  * @author jiangchao
  *         created at 2018/4/19 下午1:15
  */
-public class LoginByValidateActivity extends AppCompatActivity {
+public class LoginByValidateActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginByValidateActivity";
     EditText etCellphone;
@@ -35,35 +35,11 @@ public class LoginByValidateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         setContentView(R.layout.activity_login_by_validate);
+        initView();
         BmobSMS.initialize(LoginByValidateActivity.this, Constants.Bmob_APPID, new MySMSCodeListener());
-        btnFastLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validateCode = etValidateCode.getText().toString();
-                cellphone = etCellphone.getText().toString();
-                BmobSMS.verifySmsCode(LoginByValidateActivity.this, cellphone, validateCode, new VerifySMSCodeListener() {
-                    @Override
-                    public void done(BmobException ex) {
-                        if (ex == null) {
-                            Toast.makeText(LoginByValidateActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginByValidateActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(LoginByValidateActivity.this, ex.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-        btnGetValidateCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fastLogin();
-            }
-        });
+        btnFastLogin.setOnClickListener(this);
+        btnGetValidateCode.setOnClickListener(this);
 
     }
 
@@ -90,6 +66,34 @@ public class LoginByValidateActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_fast_login:
+                validateCode = etValidateCode.getText().toString();
+                cellphone = etCellphone.getText().toString();
+                BmobSMS.verifySmsCode(LoginByValidateActivity.this, cellphone, validateCode, new VerifySMSCodeListener() {
+                    @Override
+                    public void done(BmobException ex) {
+                        if (ex == null) {
+                            Toast.makeText(LoginByValidateActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginByValidateActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(LoginByValidateActivity.this, ex.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_validate_code:
+                fastLogin();
+                break;
+            default:
+                break;
+        }
     }
 
 
