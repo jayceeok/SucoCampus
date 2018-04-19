@@ -40,6 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:hint="@string/hint_please_input_username"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -47,11 +48,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <EditText
                     android:id="@+id/et_email"
-
                     android:layout_width="match_parent"
+                    android:hint="@string/hint_please_input_email"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -69,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:hint="@string/hint_please_input_password"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>

@@ -68,5 +68,14 @@
 
     <string name="login">登录</string>
     <string name="register">注册</string>
+    <string name="hint_please_input_username">请输入用户名</string>
+    <string name="hint_please_input_cellphone">请输入手机号</string>
+    <string name="hint_please_input_email">请输入邮箱</string>
+    <string name="hint_please_input_password">请输入密码</string>
+    <string name="hint_please_input_validate_code">请输入验证码</string>
+
+    <string name="get_validate_code">获取验证码</string>
+
+    <string name="fast_login">快捷登录</string>
 
 </resources>

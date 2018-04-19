@@ -19,31 +19,18 @@ import cn.bmob.v3.listener.InsertListener;
  */
 public class LoginActivity extends AppCompatActivity {
     private static final java.lang.String TAG = "LoginActivity";
-    //    @BindView(R.id.login_progress)
     ProgressBar loginProgress;
-    //    @BindView(R.id.et_email)
     EditText etEmail;
-    //    @BindView(R.id.et_password)
     EditText etPassword;
-    //    @BindView(R.id.btn_login)
     Button btnLogin;
-    //    @BindView(R.id.btn_register)
     Button btnRegister;
-
     EditText etUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        ButterKnife.bind(this);
-        btnRegister = (Button) findViewById(R.id.btn_register);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        etPassword = (EditText) findViewById(R.id.et_password);
-        etEmail = (EditText) findViewById(R.id.et_email);
-        etUserName = (EditText) findViewById(R.id.et_username);
-        loginProgress = (ProgressBar) findViewById(R.id.login_progress);
-
+        initView();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +60,15 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void initView() {
+        btnRegister = (Button) findViewById(R.id.btn_register);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+        etPassword = (EditText) findViewById(R.id.et_password);
+        etEmail = (EditText) findViewById(R.id.et_email);
+        etUserName = (EditText) findViewById(R.id.et_username);
+        loginProgress = (ProgressBar) findViewById(R.id.login_progress);
     }
 
     private void login() {

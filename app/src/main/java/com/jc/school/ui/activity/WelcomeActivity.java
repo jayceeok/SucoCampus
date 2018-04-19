@@ -114,7 +114,7 @@ public class WelcomeActivity extends Activity {
     }
 
     private void goHome() {
-        Intent i = new Intent(WelcomeActivity.this, LoginActivity.class);
+        Intent i = new Intent(WelcomeActivity.this, LoginByValidateActivity.class);
         startActivity(i);
         finish();
     }
