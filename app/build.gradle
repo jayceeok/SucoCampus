@@ -1,8 +1,23 @@
 apply plugin: 'com.android.application'
+// 注：需要配置符号表时，使用bugly插件
+//apply plugin: 'bugly'
+//bugly {
+//    appId = '900029763'
+//    appKey = '9gXN6JiEyCUD3jbF'
+//}
 
+/*
+除了appId和appKey之外，还可以设置其他属性，属性列表如下：
+属性	值	说明
+appId	String	App ID
+appKey	String	App Key
+execute	boolean	插件开关
+upload	boolean	上传开关
+outputDir	String	符号表文件输出路径
+ */
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.jc.school"
@@ -10,6 +25,11 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     signingConfigs {
@@ -60,7 +80,7 @@ android {
                 if (outputFile != null && outputFile.name.endsWith('.apk')) {
                     fileName = projectName + "_" + buildType + "_" + tempTime +
                             "_V" + versionName + "_" + versionCode + ".apk"
-                    output.outputFile = new File(outputFile.parent, fileName)
+                    output.outputFileName = new File(outputFile.parent, fileName)
                 }
             }
         }
@@ -73,14 +93,17 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     //    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:cardview-v7:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
     compile 'org.xutils:xutils:3.3.36'
     //    compile 'io.reactivex:rxandroid:1.1.0'
     //    compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.orhanobut:logger:1.3'
+    api 'com.jakewharton:butterknife:8.8.1'
+
     compile 'cn.bingoogolapple:bga-banner:2.0.4@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
@@ -88,11 +111,15 @@ dependencies {
         exclude group: 'com.google.code.gson'//不加就跟 Bmob 后端云里面短信验证码里面的包冲突，因为他用了 okhttp 请求
     }
     compile 'me.drakeet.materialdialog:library:1.3.1'
-//        compile 'com.android.support:cardview-v7:23.3.0'
     //点击时的水波纹
     compile 'com.github.traex.rippleeffect:library:1.3'
-    compile project(':pulltorefresh-library')
-    compile 'com.cjj.materialrefeshlayout:library:1.3.0'
+//    compile 'com.cjj.materialrefeshlayout:library:1.3.0'
+
+    // 其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.7
+    // (注：从2.1.5开始要分开Bugly SDK和NDK的配置）
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    //compile 'com.tencent.bugly:nativecrashreport:latest.release'
+
     //        exclude group: 'com.android.support', module: 'support-v4'
     //        exclude module: 'support-annotations'
 //    compile 'com.jakewharton:butterknife:7.0.1'
@@ -103,4 +130,10 @@ dependencies {
     //    compile 'com.umeng.sdk:share-qq:latest.integration'
     //    compile 'com.umeng.sdk:share-wechat:latest.integration'
     //    compile 'com.umeng.sdk:share-sina:latest.integration'
+    implementation 'com.simple:spiderman:1.0.2'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+
+        implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+//    implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
+
 }

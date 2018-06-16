@@ -6,6 +6,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
 
 import com.jc.school.R;
 
@@ -24,6 +25,13 @@ public class AboutActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("关于");
+        findViewById(R.id.btn_crash).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = null;
+                text.toUpperCase();
+            }
+        });
 
     }
 

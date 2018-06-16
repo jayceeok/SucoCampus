@@ -1,6 +1,5 @@
 package com.jc.school.ui.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.jc.pulltorefresh.library.PullToRefreshListView;
 import com.jc.school.R;
 import com.jc.school.bean.LocalNews;
 import com.jc.school.bean.TestModel;
@@ -22,7 +20,6 @@ import com.jc.school.utils.CommonAdapter;
 import com.jc.school.utils.GsonUtils;
 import com.jc.school.utils.ScreenUtil;
 import com.jc.school.utils.ViewHolder;
-import com.orhanobut.logger.Logger;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -50,7 +47,6 @@ public class LocalNewsFragment extends Fragment {
 
     private String url = Constants.API + "GetNewsListByChannelId&appVersion=3.4&numPerPage=30&adNum=50&orderType=3&channelId=21&requiredPage=1";
     private String urlTest = "http://139.196.240.94:8080/hanjue/AppProduct/findProduct.do?page=1&rows=" + count;
-    private PullToRefreshListView mPullRefreshListView;
     private LinkedList<String> mListItems;
 
     private ArrayAdapter<String> mAdapter;
@@ -335,28 +331,7 @@ public class LocalNewsFragment extends Fragment {
 
     private String[] mStrings = {"Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam", "Abondance", "Ackawi", "Acorn", "Adelost", "Affidelice au Chablis", "Afuega'l Pitu", "Airag", "Airedale", "Aisy Cendre", "Allgauer Emmentaler", "Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam", "Abondance", "Ackawi", "Acorn", "Adelost", "Affidelice au Chablis", "Afuega'l Pitu", "Airag", "Airedale", "Aisy Cendre", "Allgauer Emmentaler"};
 
-    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
 
-        @Override
-        protected String[] doInBackground(Void... params) {
-            // Simulates a background job.
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
-            return mStrings;
-        }
-
-        @Override
-        protected void onPostExecute(String[] result) {
-            //            mListItems.addFirst("Added after refresh...");
-            Logger.i(TAG, result.toString());
-            mAdapter.notifyDataSetChanged();
-            // Call onRefreshComplete when the list has been refreshed.
-            mPullRefreshListView.onRefreshComplete();
-            super.onPostExecute(result);
-        }
-    }
 
     private void initSwipeRefreshLayout() {
 
