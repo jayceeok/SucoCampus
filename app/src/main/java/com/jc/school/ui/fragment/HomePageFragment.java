@@ -84,7 +84,7 @@ public class HomePageFragment extends Fragment {
 //        initRefreshLayout();
         rvNews= (RecyclerView) view.findViewById(R.id.rv_news);
         refreshLayout= (SmartRefreshLayout) view.findViewById(R.id.refreshLayout);
-        getData();
+//        getData();
 
         return view;
     }

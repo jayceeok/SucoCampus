@@ -3,34 +3,18 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
 >
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ListView
-
-            android:id="@+id/lv_local_news"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-        </ListView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 
+  <!--<Button-->
+      <!--android:layout_height="wrap_content"-->
+      <!--android:text="query"-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:id="@+id/btn_query"-->
+      <!--&gt;</Button>-->
 
-    <!--<com.jc.pulltorefresh.library.PullToRefreshListView-->
-        <!--android:id="@+id/lv_local_news"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:cacheColorHint="#00000000"-->
-        <!--android:divider="#19000000"-->
-        <!--android:dividerHeight="4dp"-->
-        <!--android:fadingEdge="none"-->
-        <!--android:fastScrollEnabled="false"-->
-        <!--android:footerDividersEnabled="false"-->
-        <!--android:headerDividersEnabled="false"-->
-        <!--android:smoothScrollbar="true" />-->
+  <ListView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/lv"
+      ></ListView>
 </RelativeLayout>

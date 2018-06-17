@@ -1,32 +1,30 @@
 package com.jc.school.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.jc.school.R;
-import com.jc.school.bean.LocalNews;
-import com.jc.school.bean.TestModel;
-import com.jc.school.config.Constants;
+import com.jc.school.bean.FocusNews;
 import com.jc.school.utils.CommonAdapter;
-import com.jc.school.utils.GsonUtils;
-import com.jc.school.utils.ScreenUtil;
+import com.jc.school.utils.MyCallBack;
 import com.jc.school.utils.ViewHolder;
+import com.orhanobut.logger.Logger;
 
-import org.xutils.common.Callback;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -36,331 +34,113 @@ import java.util.List;
 public class LocalNewsFragment extends Fragment {
 
     private static final String TAG = "LocalNewsFragment";
-
-    private ListView mListView;
-
-    private int count = 15;
-
-    public List<LocalNews.ListEntity> mLocalNewsArrayList = new ArrayList<LocalNews.ListEntity>();
-
-    public List<TestModel.RowsEntity> mTestModelArrayList = new ArrayList<TestModel.RowsEntity>();
-
-    private String url = Constants.API + "GetNewsListByChannelId&appVersion=3.4&numPerPage=30&adNum=50&orderType=3&channelId=21&requiredPage=1";
-    private String urlTest = "http://139.196.240.94:8080/hanjue/AppProduct/findProduct.do?page=1&rows=" + count;
-    private LinkedList<String> mListItems;
-
-    private ArrayAdapter<String> mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-
-    private int lastVisibleItemPosition = 0;// 标记上次滑动位置
-    private boolean scrollFlag = false;// 标记是否滑动
+    Button btnQuery;
+    private String titleName;
+    ListView listView;
+//    Realm realm;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.layout_local_news, container, false);
-        mListView = (ListView) view.findViewById(R.id.lv_local_news);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-        initData(count);
-        initSwipeRefreshLayout();
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    // 当不滚动时
-                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:// 是当屏幕停止滚动时
-                        scrollFlag = false;
-                        // 判断滚动到底部
-                        if (mListView.getLastVisiblePosition() == (mListView
-                                .getCount() - 1)) {
+//        btnQuery = (Button) view.findViewById(R.id.btn_query);
+//        btnQuery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                RealmResults<Dog> realmResults = realm.where(Dog.class).findAll();
+//                Toast.makeText(getActivity(), realmResults.get(0).getName(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+        // Get a Realm instance for this thread
+//        realm = Realm.getDefaultInstance();
+        listView = (ListView) view.findViewById(R.id.lv);
 
-                        }
-                        // 判断滚动到顶部
-                        if (mListView.getFirstVisiblePosition() == 0) {
-                        }
-                        break;
-                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:// 滚动时
-                        scrollFlag = true;
-                        break;
-                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:// 是当用户由于之前划动屏幕并抬起手指，屏幕产生惯性滑动时
-                        scrollFlag = false;
-                        break;
-                }
-            }
-
-            /**
-             * firstVisibleItem：当前能看见的第一个列表项ID（从0开始）
-             * visibleItemCount：当前能看见的列表项个数（小半个也算） totalItemCount：列表项共数
-             */
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                 int totalItemCount) {
-                //可以放一些动画滑动效果
-                if (scrollFlag && ScreenUtil.getScreenViewBottomHeight(mListView) >= ScreenUtil.getScreenHeight(
-                        getActivity())) {
-                    if (firstVisibleItem > lastVisibleItemPosition) {// 上滑
-                    } else if (firstVisibleItem < lastVisibleItemPosition) {// 下滑
-                    } else {
-                        return;
-                    }
-                    lastVisibleItemPosition = firstVisibleItem;
-                }
-            }
-
-        });
-        //        mPullRefreshListView = (PullToRefreshListView) view.findViewById(R.id.lv_local_news);
-        //Mode设置为Mode.BOTH后，下拉和上拉都会执行onRefresh()中的方法了
-        /*
-            * 设置PullToRefresh刷新模式
-            * BOTH:上拉刷新和下拉刷新都支持
-            * DISABLED：禁用上拉下拉刷新
-            * PULL_FROM_START:仅支持下拉刷新（默认）
-            * PULL_FROM_END：仅支持上拉刷新
-            * MANUAL_REFRESH_ONLY：只允许手动触发
-            * */
-        //        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
-        //        //因为界面上边，我们要显示“下拉刷新”，下边我们要显示“上拉加载”，所以后三行就是改变下边部分的文字，getLoadingLayoutProxy(false, true)方法大家可以自己感受一下
-        //        mPullRefreshListView.getLoadingLayoutProxy(false, true).setPullLabel("下拉加载...");
-        //        mPullRefreshListView.getLoadingLayoutProxy(false, true).setRefreshingLabel("载入中...");
-        //        mPullRefreshListView.getLoadingLayoutProxy(false, true).setReleaseLabel("上拉加载...");
-        //        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-        //            @Override
-        //            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-        //                String label = DateUtils.formatDateTime(getActivity(),
-        //                                                        System.currentTimeMillis(),
-        //                                                        DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL
-        //                );
-        //                // 下拉刷新 业务代码
-        //                if (refreshView.isShownHeader()) {
-        //                    mPullRefreshListView.getLoadingLayoutProxy().setRefreshingLabel("正在刷新");
-        //                    mPullRefreshListView.getLoadingLayoutProxy().setPullLabel("下拉刷新");
-        //                    mPullRefreshListView.getLoadingLayoutProxy().setReleaseLabel("释放开始刷新");
-        //                    refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("最后更新时间:" + label);
-        ////                    mListItems.addFirst("Added after refresh...");
-        //
-        //
-        //                    new GetDataTask().execute();
-        //                }
-        //                // 上拉加载更多 业务代码
-        //                if (refreshView.isShownFooter()) {
-        //                    mPullRefreshListView.getLoadingLayoutProxy().setRefreshingLabel("正在加载");
-        //                    mPullRefreshListView.getLoadingLayoutProxy().setPullLabel("上拉加载更多");
-        //                    mPullRefreshListView.getLoadingLayoutProxy().setReleaseLabel("释放开始加载");
-        //                    refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("最后加载时间:" + label);
-        //
-        //
-        //                    // Do work to refresh the list here.
-        //                    new GetDataTask().execute();
-        //                }
-        //
-        //
-        //                // Update the LastUpdatedLabel
-        //                //                        refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-        //
-        //
-        //            }
-        //        });
-        //        // Add an end-of-list listener
-        //        mPullRefreshListView.setOnLastItemVisibleListener(new PullToRefreshBase.OnLastItemVisibleListener() {
-        //            @Override
-        //            public void onLastItemVisible() {
-        //                Toast.makeText(getActivity(), "到底了!", Toast.LENGTH_SHORT).show();
-        //            }
-        //        });
-        //        ListView actualListView = mPullRefreshListView.getRefreshableView();
-        //        // Need to use the Actual ListView when registering for Context Menu
-        //        registerForContextMenu(actualListView);
-        //
-        //        mListItems = new LinkedList();
-        //        mListItems.addAll(Arrays.asList(mStrings));
-        //
-        //        mAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, mListItems);
-        //
-        //        /**
-        //         * Add Sound Event Listener
-        //         */
-        //        com.jc.pulltorefresh.extras.SoundPullEventListener<ListView> soundListener = new SoundPullEventListener(
-        //                getActivity());
-        //        soundListener.addSoundEvent(PullToRefreshBase.State.PULL_TO_REFRESH, R.raw.pull_event);
-        //        soundListener.addSoundEvent(PullToRefreshBase.State.RESET, R.raw.reset_sound);
-        //        soundListener.addSoundEvent(PullToRefreshBase.State.REFRESHING, R.raw.refreshing_sound);
-        //        mPullRefreshListView.setOnPullEventListener(soundListener);
-        // You can also just use setListAdapter(mAdapter) or mPullRefreshListView.setAdapter(mAdapter)
-        //         actualListView.setAdapter(mAdapter);
+        initData();
         return view;
     }
 
-    private void initData(int count) {
+    private void initData() {
+//        realm.beginTransaction();
+//        Dog dog = realm.createObject(Dog.class);
+//        dog.setAge(32);
+//        dog.setName("钢铁侠");
+//        realm.commitTransaction();
+        RequestParams params = new RequestParams("http://news.usts.edu.cn/news/news_more.asp?lm=1");
+//        params.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+//        params.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.75 Safari/537.36");
+        params.addHeader("", "");
 
-        //        RequestParams requestParams = new RequestParams(url);
-        //        x.http().get(requestParams, new Callback.CacheCallback<String>() {
-        //            @Override
-        //            public void onSuccess(String result) {
-        //                Logger.i(TAG, result);
-        //                LocalNews locaNews = GsonUtils.jsonToBean(result, LocalNews.class);
-        //
-        //                for (int i = 0; i < locaNews.getList().size(); i++) {
-        //                    LocalNews.ListEntity one = new LocalNews.ListEntity(locaNews.getList()
-        //                                                                                .get(i)
-        //                                                                                .getTitle(),
-        //                                                                        locaNews.getList()
-        //                                                                                .get(i)
-        //                                                                                .getContent(),
-        //                                                                        locaNews.getList()
-        //                                                                                .get(i)
-        //                                                                                .getDate(),
-        //                                                                        locaNews.getList()
-        //                                                                                .get(i)
-        //                                                                                .getImage(),
-        //                                                                        locaNews.getList()
-        //                                                                                .get(i)
-        //                                                                                .getNewsId()
-        //                    );
-        //                    mLocalNewsArrayList.add(one);
-        //
-        //                }
-        //                initView();
-        //
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onError(Throwable ex, boolean isOnCallback) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onCancelled(CancelledException cex) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onFinished() {
-        //
-        //            }
-        //
-        //            @Override
-        //            public boolean onCache(String result) {
-        //                return false;
-        //            }
-        //        });
-
-        RequestParams requestParams = new RequestParams(urlTest);
-        x.http().get(requestParams, new Callback.CacheCallback<String>() {
-
-
+        x.http().get(params, new MyCallBack<String>(getContext()) {
             @Override
             public void onSuccess(String result) {
-
-                TestModel testModel = GsonUtils.jsonToBean(result, TestModel.class);
-                for (int i = 0; i < testModel.getRows().size(); i++) {
-                    TestModel.RowsEntity one = new TestModel.RowsEntity(testModel.getRows()
-                                                                                 .get(i)
-                                                                                 .getProductname(),
-                                                                        testModel.getRows()
-                                                                                 .get(i)
-                                                                                 .getProductid()
-                    );
-                    mTestModelArrayList.add(one);
-                }
-                initView();
+                super.onSuccess(result);
+//                Logger.i(TAG,"成功 ： "+result);
+                initHtml(result);
+                listView.setAdapter(new CommonAdapter<FocusNews>(getActivity(), focusNewsList, R.layout.item_news) {
+                    @Override
+                    public void convert(ViewHolder holder, FocusNews focusNews) {
+                        holder.setText(R.id.tv_title, focusNews.getTitle());
+                    }
+                });
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
+                super.onError(ex, isOnCallback);
+                Logger.i(TAG, "报错 ： " + "   --- " + ex);
             }
 
             @Override
             public void onFinished() {
-
-            }
-
-            @Override
-            public boolean onCache(String result) {
-                return false;
+                super.onFinished();
             }
         });
     }
 
-    private void initView() {
-        //        mPullRefreshListView.setAdapter(new CommonAdapter<LocalNews.ListEntity>(getActivity(),
-        //                                                                                mLocalNewsArrayList,
-        //                                                                                R.layout.item_local_news
-        //        ) {
-        //
-        //            @Override
-        //            public void convert(ViewHolder holder, LocalNews.ListEntity listEntity) {
-        //                holder.setText(R.id.tv_local_news_title, listEntity.getTitle())
-        //                      .setText(R.id.tv_local_news_content, listEntity.getContent())
-        //                      .setText(R.id.tv_post_date, listEntity.getDate())
-        //                      .setImageURL(getActivity(),
-        //                                   R.id.iv_local_news_image,
-        //                                   listEntity.getImage().getSrc()
-        //                      );
-        //            }
-        //        });
+    List<FocusNews> focusNewsList = new ArrayList<>();
 
-
-        mListView.setAdapter(new CommonAdapter<TestModel.RowsEntity>(getActivity(),
-                                                                     mTestModelArrayList,
-                                                                     R.layout.item_test
-        ) {
-            @Override
-            public void convert(ViewHolder holder, TestModel.RowsEntity rowsEntity) {
-                holder.setText(R.id.tv_name, rowsEntity.getProductname());
+    /**
+     * 处理获取的html数据
+     */
+    private void initHtml(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements title = doc.getElementsByClass("list_lb");
+        String s = title.toString();
+//        Logger.i(TAG,s);
+        Document doc1 = Jsoup.parse(s);
+        Elements img = doc1.getElementsByTag("a");
+//        Logger.i(TAG, String.valueOf(img));
+//        MyLog.log("pic ： " +img.size()+" ---- "+img);
+//        if ((img.size()!=0&&isRefresh)||meiZiModels.size()>=200){
+//            meiZiModels.clear();
+//            adapter.notifyDataSetChanged();
+//            isRefresh = false;
+//        }
+        for (Element e : img) {
+            String titleName = e.attr("title");
+//            Logger.i(TAG, "title : " + titleName);
+            if (!TextUtils.isEmpty(titleName)) {
+                String name = e.attr("title");
+                Logger.i(TAG, name);
+                FocusNews focusNews = new FocusNews();
+                focusNews.setTitle(name);
+                // 截取地址
+//                if (imgUrl.length()>0){
+//                    int dian = imgUrl.lastIndexOf("."); // 截取到最后一个点
+//                    int gang = imgUrl.lastIndexOf("/");
+//                    String num = imgUrl.substring((gang+1), dian); // 妹子号
+//                    String substring1 = imgUrl.substring(0, gang); // 截取 妹子号后剩余下的
+//                    int gang2 = substring1.lastIndexOf("/");
+//                    String year = substring1.substring((gang2+1)); // 年份
+////                    MyLog.log(imgUrl +" ==year== "+year+ " --num--" +num);
+//                    meiZiModel.setNum(num);
+//                    meiZiModel.setYare(year);
+//                    meiZiModels.add(meiZiModel);
+//                }
+                focusNewsList.add(focusNews);
             }
-        });
-
-
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-
-    private String[] mStrings = {"Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam", "Abondance", "Ackawi", "Acorn", "Adelost", "Affidelice au Chablis", "Afuega'l Pitu", "Airag", "Airedale", "Aisy Cendre", "Allgauer Emmentaler", "Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam", "Abondance", "Ackawi", "Acorn", "Adelost", "Affidelice au Chablis", "Afuega'l Pitu", "Airag", "Airedale", "Aisy Cendre", "Allgauer Emmentaler"};
-
-
-
-    private void initSwipeRefreshLayout() {
-
-
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light,
-                                                    android.R.color.holo_purple,
-                                                    android.R.color.holo_blue_dark,
-                                                    android.R.color.holo_green_light,
-                                                    android.R.color.holo_red_dark
-        );
-        mSwipeRefreshLayout.setDistanceToTriggerSync(100);
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.ac_bg_side_nav_actions));
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (mListView != null) {
-                            mTestModelArrayList.clear();
-                        }
-                        initData(count);
-                        //                        mListView.smoothScrollToPosition(0);
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 3000);
-            }
-        });
+        }
     }
 }

@@ -12,6 +12,9 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import org.xutils.x;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class App extends Application {
     private static App sInstance;
 
@@ -19,6 +22,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+//         Initialize Realm (just once per application)
+        Realm.init(this);
+        // The default Realm file is "default.realm" in Context.getFilesDir();
+        // we'll change it to "myrealm.realm"
+        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm.realm").build();
+        Realm.setDefaultConfiguration(config);
+
         x.Ext.init(this);
         x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
 
@@ -48,7 +58,6 @@ public class App extends Application {
         * 参数3：是否开启调试模式，调试模式下会输出'CrashReport'tag的日志
         */
         CrashReport.initCrashReport(getApplicationContext(), "e1120af31b", true);
-
 
     }
 
