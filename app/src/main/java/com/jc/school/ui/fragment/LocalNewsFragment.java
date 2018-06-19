@@ -71,7 +71,7 @@ public class LocalNewsFragment extends Fragment {
 //        params.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
 //        params.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.75 Safari/537.36");
         params.addHeader("", "");
-
+        params.setCharset("gb2312");
         x.http().get(params, new MyCallBack<String>(getContext()) {
             @Override
             public void onSuccess(String result) {
