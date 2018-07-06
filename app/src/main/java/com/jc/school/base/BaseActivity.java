@@ -94,5 +94,11 @@ public abstract class BaseActivity extends Activity {
         return (int) (scale*dipValue+0.5f);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher().watch(this);
+
+    }
 }
 

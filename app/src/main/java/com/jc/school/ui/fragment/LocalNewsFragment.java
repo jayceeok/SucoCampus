@@ -58,6 +58,8 @@ public class LocalNewsFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.lv);
 
         initData();
+
+
         return view;
     }
 

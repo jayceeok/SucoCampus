@@ -96,5 +96,11 @@ public abstract class BaseFragment extends Fragment {
         return (int) (scale*dipValue+0.5f);
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher().watch(this);
+    }
 }
 

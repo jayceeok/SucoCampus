@@ -8,6 +8,8 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.simple.spiderman.CrashModel;
 import com.simple.spiderman.SpiderMan;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.xutils.x;
@@ -18,10 +20,17 @@ import io.realm.RealmConfiguration;
 public class App extends Application {
     private static App sInstance;
 
+    private RefWatcher mRefWatcher;
+
+    public static final boolean DEBUG = true;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+
+        mRefWatcher = DEBUG ?  LeakCanary.install(this) : RefWatcher.DISABLED;
 //         Initialize Realm (just once per application)
         Realm.init(this);
         // The default Realm file is "default.realm" in Context.getFilesDir();
@@ -66,4 +75,7 @@ public class App extends Application {
         return sInstance;
     }
 
+    public static RefWatcher getRefWatcher() {
+        return getInstance().mRefWatcher;
+    }
 }
